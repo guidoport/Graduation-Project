@@ -32,8 +32,8 @@ This research proposes a hybrid method for segmenting and classifying point clou
 - Scikit-learn 0.19.0
 
 #### Prerequisites for training Artificial Neural Networks:
-- Keras
-- TensorFlow (as Keras back-end)
+- Keras 2.1.1
+- TensorFlow 1.4.0 (as Keras back-end)
 - Required when training on GPU (requires TensorFlow-gpu version):
   - NVIDIA GPU with compute capability =< 3.0
   - CUDA Toolkit 8.0
