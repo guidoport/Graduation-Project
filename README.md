@@ -17,9 +17,11 @@ This research proposes a hybrid method for segmenting and classifying point clou
 
 
 # Prerequisites
+#### Software:
 - Python 3.5 (https://www.python.org/downloads/release/python-354/)
 - PCL 1.8 or higher (http://pointclouds.org/)
 - Blender v2.79 (https://www.blender.org/download/)
+- CloudCompare when transforming and subsampling (almost) any point cloud data (http://www.cloudcompare.org/)
 
 #### Python Packages:
 - Numpy 1.13.1
@@ -29,7 +31,15 @@ This research proposes a hybrid method for segmenting and classifying point clou
 - Pyflann3 1.8.4.1
 - Scikit-learn 0.19.0
 
-#### Blender Packages
+#### Prerequisites for training Artificial Neural Networks:
+- Keras
+- TensorFlow (as Keras back-end)
+- Required when training on GPU (requires TensorFlow-gpu version):
+  - NVIDIA GPU with compute capability =< 3.0
+  - CUDA Toolkit 8.0
+  - cuDNN 5.1
+
+#### Blender Packages:
 - Numpy 1.13.1
 - PLY Import/Export
 
