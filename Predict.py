@@ -18,94 +18,95 @@ from keras import regularizers
 import pandas as pd
 import h5py
 
-# pc = np.genfromtxt('C:/Users/s143873/Desktop/Segmented point cloud/13/13.pcd', dtype=None)
-# df = pd.DataFrame(pc)
-#
-# asd = df.as_matrix()
-# print(asd)
-# np.save('C:/Users/s143873/Desktop/Segmented point cloud/13/13_training.npy', asd)
-# quit()
 
-model = load_model('C:/Users/s143873/Desktop/Segmented point cloud/FPFH/neural_net_early_stopping.h5')
+model = load_model('neural_net_FPFH.h5')
 
-dataset = np.load('13_training.npy')
+dataset = np.load('19+20_training.npy')
 
+fpfh_norm = np.divide(dataset[:,0:33], 100)
+normals_curv = dataset[:,33:37]
+spatial_xyz = dataset[:,38:41]
 
-X_test = dataset[:,0:37]
+X_test = np.concatenate((fpfh_norm, normals_curv), axis=1)
 print(X_test.shape)
 
 predictions = model.predict_classes(X_test, batch_size=10000)
+probabilities = model.predict_proba(X_test, batch_size=10000)
 Y_test = (dataset[:,37])
 
-print(predictions) # predicted
-print(Y_test)      # actual
+# print(predictions) # predicted
+# print(Y_test)      # actual
+
+print(probabilities)
+print(probabilities.shape)
 
 print(sum(1 for x,y in zip(Y_test,predictions) if x == y) / len(Y_test))
 
-quit()
-classified_data = np.concatenate((dataset[:,38:41], predictions[:,None]), axis=1)
+
+classified_data = np.concatenate((dataset[:,37:41], predictions[:,None], probabilities, dataset[:,33:37]), axis=1)
 print(classified_data)
+np.save('19+20_predicted_values_incl_probability.npy', classified_data)
+quit()
 
-
-class_dict = {"beam":0, "ceiling":1, "chair":2, "column":3, "door":4, "floor":5, "occlusion":6, "table":7, "wall":8, "window":9}
-
-df = pd.DataFrame(classified_data, columns=['x', 'y', 'z', 'class'])
-class_beam = df[df['class'] == 0]
-class_ceiling = df[df['class'] == 1]
-class_chair = df[df['class'] == 2]
-class_column = df[df['class'] == 3]
-class_door = df[df['class'] == 4]
-class_floor = df[df['class'] == 5]
-class_occlusion = df[df['class'] == 6]
-class_table = df[df['class'] == 7]
-class_wall = df[df['class'] == 8]
-class_window = df[df['class'] == 9]
-
-beam = class_beam.drop('class', 1).as_matrix()
-ceiling = class_ceiling.drop('class', 1).as_matrix()
-chair = class_chair.drop('class', 1).as_matrix()
-column = class_column.drop('class', 1).as_matrix()
-door = class_door.drop('class', 1).as_matrix()
-floor = class_floor.drop('class', 1).as_matrix()
-occlusion = class_occlusion.drop('class', 1).as_matrix()
-table = class_table.drop('class', 1).as_matrix()
-wall = class_wall.drop('class', 1).as_matrix()
-window = class_window.drop('class', 1).as_matrix()
-
-print(beam)
-print(ceiling)
-
-
-def create_ply(data, name):
-    outputFile = 'C:/Users/s143873/Desktop/Segmented point cloud/13/predicted/pred_{}.ply'.format(name)
-    lines = [" ".join([ str(v) for v in i ]) + "\n" for i in data]
-    f = open(outputFile, 'w')
-    f.writelines("ply\n")
-    f.writelines("format ascii 1.0\n")
-    f.writelines("comment Created by Guido: use for blender\n")
-    f.writelines("element vertex {}\n".format(len(lines)))
-    f.writelines("property float x\n"
-                 "property float y\n"
-                 "property float z\n")
-    f.writelines("end_header\n")
-    f.writelines(lines)
-    f.close()
-
-create_ply(beam, 'beam')
-create_ply(ceiling, 'ceiling')
-create_ply(chair, 'chair')
-create_ply(column, 'column')
-create_ply(door, 'door')
-create_ply(floor, 'floor')
-create_ply(occlusion, 'occlusion')
-create_ply(table, 'table')
-create_ply(wall, 'wall')
-create_ply(window, 'window')
-
-
-
-# Write to .ply
-
+# class_dict = {"beam":0, "ceiling":1, "chair":2, "column":3, "door":4, "floor":5, "occlusion":6, "table":7, "wall":8, "window":9}
+#
+# df = pd.DataFrame(classified_data, columns=['x', 'y', 'z', 'class'])
+# class_beam = df[df['class'] == 0]
+# class_ceiling = df[df['class'] == 1]
+# class_chair = df[df['class'] == 2]
+# class_column = df[df['class'] == 3]
+# class_door = df[df['class'] == 4]
+# class_floor = df[df['class'] == 5]
+# class_occlusion = df[df['class'] == 6]
+# class_table = df[df['class'] == 7]
+# class_wall = df[df['class'] == 8]
+# class_window = df[df['class'] == 9]
+#
+# beam = class_beam.drop('class', 1).as_matrix()
+# ceiling = class_ceiling.drop('class', 1).as_matrix()
+# chair = class_chair.drop('class', 1).as_matrix()
+# column = class_column.drop('class', 1).as_matrix()
+# door = class_door.drop('class', 1).as_matrix()
+# floor = class_floor.drop('class', 1).as_matrix()
+# occlusion = class_occlusion.drop('class', 1).as_matrix()
+# table = class_table.drop('class', 1).as_matrix()
+# wall = class_wall.drop('class', 1).as_matrix()
+# window = class_window.drop('class', 1).as_matrix()
+#
+# print(beam)
+# print(ceiling)
+#
+#
+# def create_ply(data, name):
+#     outputFile = 'C:/Users/s143873/Desktop/Segmented point cloud/19+20/predicted2/pred_{}.ply'.format(name)
+#     lines = [" ".join([ str(v) for v in i ]) + "\n" for i in data]
+#     f = open(outputFile, 'w')
+#     f.writelines("ply\n")
+#     f.writelines("format ascii 1.0\n")
+#     f.writelines("comment Created by Guido: use for blender\n")
+#     f.writelines("element vertex {}\n".format(len(lines)))
+#     f.writelines("property float x\n"
+#                  "property float y\n"
+#                  "property float z\n")
+#     f.writelines("end_header\n")
+#     f.writelines(lines)
+#     f.close()
+#
+# create_ply(beam, 'beam')
+# create_ply(ceiling, 'ceiling')
+# create_ply(chair, 'chair')
+# create_ply(column, 'column')
+# create_ply(door, 'door')
+# create_ply(floor, 'floor')
+# create_ply(occlusion, 'occlusion')
+# create_ply(table, 'table')
+# create_ply(wall, 'wall')
+# create_ply(window, 'window')
+#
+#
+#
+# # Write to .ply
+#
 
 
 def plot_confusion_matrix(cm, classes,
@@ -162,10 +163,10 @@ cnf_matrix = (confusion_matrix(Y_test, predictions))
 plt.figure()
 plot_confusion_matrix(cnf_matrix, classes=lable_names,
                       title='Confusion matrix, without normalization')
+plt.savefig('13_conf_matrix.png')
 
 # Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(cnf_matrix, classes=lable_names, normalize=True,
                       title='Normalized confusion matrix')
-
-plt.show()
+plt.savefig('13_conf_matrix2.png')
