@@ -21,7 +21,7 @@ This research proposes a hybrid method for segmenting and classifying point clou
 - Python 3.5 (https://www.python.org/downloads/release/python-354/)
 - PCL 1.8 or higher (http://pointclouds.org/)
 - Blender v2.79 (https://www.blender.org/download/)
-- CloudCompare when transforming and subsampling (almost) any point cloud data (http://www.cloudcompare.org/)
+- CloudCompare for transforming and subsampling (almost) any point cloud data to .ply (http://www.cloudcompare.org/)
 
 #### Python Packages:
 - Numpy 1.13.1
