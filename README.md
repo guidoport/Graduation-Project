@@ -1,6 +1,7 @@
 # Graduation project
 
 # Towards the automation of semantically enriching point cloud datasets
+#### An interactive method incorporating machine learning for fast semantic classification of building indoor scenes
 
 by Guido Porteners
 
@@ -16,9 +17,9 @@ This research proposes a hybrid method for segmenting and classifying point clou
 
 
 # Prerequisites
-- [Python 3.5] (https://www.python.org/downloads/release/python-354/)
-- [PCL 1.8 or higher] (http://pointclouds.org/)
-- [Blender v2.79] (https://www.blender.org/download/)
+- Python 3.5 (https://www.python.org/downloads/release/python-354/)
+- PCL 1.8 or higher (http://pointclouds.org/)
+- Blender v2.79 (https://www.blender.org/download/)
 
 #### Python Packages:
 - Numpy 1.13.1
@@ -27,6 +28,10 @@ This research proposes a hybrid method for segmenting and classifying point clou
 - Pandas 0.20.3
 - Pyflann3 1.8.4.1
 - Scikit-learn 0.19.0
+
+#### Blender Packages
+- Numpy 1.13.1
+- PLY Import/Export
 
 # Workflow
 To be updated...
